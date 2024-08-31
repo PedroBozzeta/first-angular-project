@@ -25,3 +25,10 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Used commands
+
+ng g environments -> Crear carpeta environments
+ng g s services/producto ->Crear servicio
+ng g class services/producto -> crear modelo
+ng g c producto/detalle-producto --skip-tests --flat ->Crear componentes
