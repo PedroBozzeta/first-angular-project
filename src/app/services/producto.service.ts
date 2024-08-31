@@ -19,15 +19,15 @@ export class ProductoService {
 
   }
   public detalle(id: number): Observable<Producto> {
-    return this.httpClient.get<Producto>(`${this.productoURL}+${id}`)
+    return this.httpClient.get<Producto>(this.productoURL+'/'+id)
   }
 
   public update(id: number, producto: Producto): Observable<any> {
-    return this.httpClient.put(this.productoURL + id, producto)
+    return this.httpClient.put(this.productoURL +'/'+ id, producto)
   }
 
   public delete(id: number): Observable<any> {
-    return this.httpClient.delete(this.productoURL+id)
+    return this.httpClient.delete(this.productoURL+'/'+id)
   }
   public crear(producto: Producto): Observable<any> {
     return this.httpClient.post<any>(this.productoURL, producto);

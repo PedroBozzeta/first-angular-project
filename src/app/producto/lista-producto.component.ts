@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { ProductoService } from '../services/producto.service';
 import { Producto } from '../models/producto';
 import { OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2'
 @Component({
   selector: 'app-lista-producto',
   standalone: true,
@@ -14,7 +16,8 @@ export class ListaProductoComponent implements OnInit{
   productos: Producto[] = [];
 
   constructor(
-    private productoService:ProductoService
+    private productoService: ProductoService,
+    private router:Router,
   ) { }
   
   ngOnInit(): void{
@@ -33,6 +36,43 @@ export class ListaProductoComponent implements OnInit{
   }
 
   borrar(id: number) {
-    console.log("Se eliminará el producto con id "+id)
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger mr-2"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "¿Estás seguro?",
+      text: "No hay vuelta atrás!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, estoy seguro",
+      cancelButtonText: "No, mejor no",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.productoService.delete(id).subscribe(data => {
+          console.log(data);
+        this.router.navigate(['/'])},
+          err => console.log(err))
+        this.router.navigate(['/'])
+        swalWithBootstrapButtons.fire({
+          title: "OK!",
+          text: "Producto Eliminado",
+          icon: "success"
+        });
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelado",
+          text: "Producto a salvo",
+          icon: "error"
+        });
+      }
+    });
   }
 }
